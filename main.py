@@ -1,5 +1,7 @@
 import wordle
+import os
 
+os.system("cls")
 
 if __name__ == "__main__":
     is_game_on = True
@@ -8,14 +10,12 @@ if __name__ == "__main__":
     while is_game_on:
         if is_game_on is True:
             current_game = wordle.Wordle(
-                user_guess=str(input(">"))
+                user_guess=str(input(f"{wordle.Wordle.counter + 1}>"))
             )
             if current_game.is_valid():
                 current_game.increase_counter()
-                print(current_game.counter)
-                x = current_game.brain_game()
-                print(x)
-                if x is False:
-                    is_game_on = False
+                current_game.check_perfect_guess()
+                current_game.check_game_over()
+                current_game.brain_game()
 
 

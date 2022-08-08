@@ -1,8 +1,10 @@
+import sys
+
 from words_dictionary import words_dict
 import random
 
 # ANSWER = random.choice(words_dict)
-ANSWER ="colin"
+ANSWER = "colin"
 MAX_TURNS = 6
 
 
@@ -18,7 +20,34 @@ class Color:
 
 class Wordle:
     counter = 0
-    correct_index = set()
+    green_chars = set()
+    all_guesses = []
+    alphabets_status = {'a': 'a',
+                        'b': 'b',
+                        'c': 'c',
+                        'd': 'd',
+                        'e': 'e',
+                        'f': 'f',
+                        'g': 'g',
+                        'h': 'h',
+                        'i': 'i',
+                        'j': 'j',
+                        'k': 'k',
+                        'l': 'l',
+                        'm': 'm',
+                        'n': 'n',
+                        'o': 'o',
+                        'p': 'p',
+                        'q': 'q',
+                        'r': 'r',
+                        's': 's',
+                        't': 't',
+                        'u': 'u',
+                        'v': 'v',
+                        'w': 'w',
+                        'x': 'x',
+                        'y': 'y',
+                        'z': 'z'}
 
     def __init__(self, user_guess: str):
         self.user_guess = user_guess
@@ -28,43 +57,55 @@ class Wordle:
         return self.user_guess in words_dict
 
     def brain_game(self):
-        if self.is_winner():
-            print("You have won!")
-            return False
-        if Wordle.counter >= MAX_TURNS:
-            if self.is_winner():
-                print("You have won!")
-                return False
         self.check_guess()
-        self.game_over()
+        ans = "".join(self.guess_chars)
+        Wordle.all_guesses.append(ans)
+        print(ans)
+
+    def print_all_guesses(self):
+        for ele in Wordle.all_guesses:
+            print(ele)
 
     def increase_counter(self):
         Wordle.counter += 1
 
-    def is_winner(self):
-        return self.user_guess == ANSWER
+    def check_perfect_guess(self):
+        if self.user_guess == ANSWER:
+            ans = "".join(self.guess_chars)
+            Wordle.all_guesses.append(f"{Color.GREEN}{ans}{Color.YELLOW}")
+            print(f"You have won in {Wordle.counter} chance/s! :)")
+            self.print_all_guesses()
+            sys.exit(1)
 
-    def game_over(self):
-        if Wordle.counter > 6:
-            if self.is_winner():
-                print("You've won!")
-            else:
-                print("You lost!")
-            return False
+    def check_game_over(self):
+        if MAX_TURNS == Wordle.counter:
+            print(f"You lost! Better luck next time!")
+            print(f"The word was {ANSWER}")
+            sys.exit(1)
 
     def check_guess(self):
         for i in range(5):
             if self.guess_chars[i] == ANSWER[i]:
+                Wordle.green_chars.add(self.guess_chars[i])
+                self.change_alphabet_status(self.guess_chars[i], "green")
                 self.guess_chars[i] = f"{Color.GREEN}{self.guess_chars[i]}{Color.BASE}"
-                Wordle.correct_index.add(i)
+            elif self.guess_chars[i] in ANSWER and self.guess_chars[i] not in Wordle.green_chars:
+                self.change_alphabet_status(self.guess_chars[i], "yellow")
+                self.guess_chars[i] = f"{Color.YELLOW}{self.guess_chars[i]}{Color.BASE}"
             else:
-                if self.guess_chars[i] in ANSWER:
-                    if i not in Wordle.correct_index:
-                        self.guess_chars[i] = f"{Color.YELLOW}{self.guess_chars[i]}{Color.BASE}"
-                    else:
-                        self.guess_chars[i] = self.guess_chars[i]
-                else:
-                    self.guess_chars[i] = self.guess_chars[i]
+                self.change_alphabet_status(self.guess_chars[i], "grey")
 
-        ans = "".join(self.guess_chars)
-        print(ans)
+        self.print_alphabet_status()
+
+    def change_alphabet_status(self, char, color):
+        if color == "green":
+            Wordle.alphabets_status[char] = f"{Color.GREEN}{char}{Color.BASE}"
+        elif color == "yellow":
+            Wordle.alphabets_status[char] = f"{Color.YELLOW}{char}{Color.BASE}"
+        elif color == "grey":
+            Wordle.alphabets_status[char] = f"{Color.GREY}{char}{Color.BASE}"
+
+    def print_alphabet_status(self):
+        for key, value in Wordle.alphabets_status.items():
+            print(value, end=" ")
+        print("")
