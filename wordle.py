@@ -1,10 +1,13 @@
 import sys
 
-from words_dictionary import words_dict
+from words_wordle import words_dict
 import random
 
-# ANSWER = random.choice(words_dict)
-ANSWER = "colin"
+choices = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+           'w', 'x', 'y', 'z']
+ANSWER_KEY = random.choice(choices)
+ANSWER = random.choice(words_dict[ANSWER_KEY])
+# ANSWER = "colin"
 MAX_TURNS = 6
 
 
@@ -54,7 +57,7 @@ class Wordle:
         self.guess_chars = list(self.user_guess)
 
     def is_valid(self):
-        return self.user_guess in words_dict
+        return self.user_guess in words_dict[self.user_guess[0]]
 
     def brain_game(self):
         self.check_guess()
