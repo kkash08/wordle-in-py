@@ -2,8 +2,13 @@ import wordle
 import os
 
 os.system("cls")
-
+LOGO = """
+ _       ___   ___   ___   _     ____ 
+\ \    // / \ | |_) | | \ | |   | |_  
+ \_\/\/ \_\_/ |_| \ |_|_/ |_|__ |_|__
+"""
 if __name__ == "__main__":
+    print(LOGO)
     is_game_on = True
     with open("cheat.txt", "w") as file:
         file.write(wordle.ANSWER)
@@ -17,5 +22,3 @@ if __name__ == "__main__":
                 current_game.check_perfect_guess()
                 current_game.check_game_over()
                 current_game.brain_game()
-
-

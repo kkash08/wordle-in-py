@@ -65,11 +65,13 @@ class Wordle:
         Wordle.all_guesses.append(ans)
         print(ans)
 
-    def print_all_guesses(self):
+    @staticmethod
+    def print_all_guesses():
         for ele in Wordle.all_guesses:
             print(ele)
 
-    def increase_counter(self):
+    @staticmethod
+    def increase_counter():
         Wordle.counter += 1
 
     def check_perfect_guess(self):
@@ -80,7 +82,8 @@ class Wordle:
             self.print_all_guesses()
             sys.exit(1)
 
-    def check_game_over(self):
+    @staticmethod
+    def check_game_over():
         if MAX_TURNS == Wordle.counter:
             print(f"You lost! Better luck next time!")
             print(f"The word was {ANSWER}")
@@ -100,7 +103,8 @@ class Wordle:
 
         self.print_alphabet_status()
 
-    def change_alphabet_status(self, char, color):
+    @staticmethod
+    def change_alphabet_status(char, color):
         if color == "green":
             Wordle.alphabets_status[char] = f"{Color.GREEN}{char}{Color.BASE}"
         elif color == "yellow":
@@ -108,7 +112,8 @@ class Wordle:
         elif color == "grey":
             Wordle.alphabets_status[char] = f"{Color.GREY}{char}{Color.BASE}"
 
-    def print_alphabet_status(self):
+    @staticmethod
+    def print_alphabet_status():
         for key, value in Wordle.alphabets_status.items():
             print(value, end=" ")
         print("")
